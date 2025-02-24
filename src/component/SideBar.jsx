@@ -40,11 +40,11 @@ function SideBar({ collapsed }) {
             ]}
           />
         </aside>
-       
+    
         <div className=" absolute  right-3  w-400 h-screen">
-       <MainSection />
+        <MainSection /> 
 
-       </div>
+      </div> 
       </div>
     </div>
   );

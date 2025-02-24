@@ -1,7 +1,9 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import useAuthstore from "../store/my-store";
 
 function Navbar({ collapsed, setcollapsed }) {
+  const state = useAuthstore()
   return (
     <div className="w-screen">
       <nav className="bg-slate-800 h-20 text-white   items-center">
@@ -18,7 +20,7 @@ function Navbar({ collapsed, setcollapsed }) {
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </Button>
           </div>
-          <div>Avatar</div>
+          <div>{state.user.username}</div>
         </div>
       </nav>
     </div>
