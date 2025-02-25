@@ -6,7 +6,7 @@ import useAuthstore from "../store/my-store";
 function Login() {
   const [Loading, setLoading] = useState(false);
   return (
-    <div className="flex items-center justify-center  mt-90 h-full ">
+    <div className="flex items-center justify-center   h-full ">
       <Card className=" shadow-blue-700 shadow-lg w-96">
         <Form
           onFinish={(values) => {
@@ -39,11 +39,12 @@ function Login() {
           </Form.Item>
           <Form.Item label={null}>
             <Button
+            loading = {Loading}
               className="w-20"
               type="primary"
               htmlType="Submit"
               
-            >{Loading && <div>loading...</div>} Kirish</Button>
+            > Kirish</Button>
           </Form.Item>
         </Form>
       </Card>
