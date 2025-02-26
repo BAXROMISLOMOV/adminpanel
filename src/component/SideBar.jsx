@@ -2,6 +2,7 @@ import {
   ContainerOutlined,
   DesktopOutlined,
   HomeOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { Link } from "react-router";
@@ -23,13 +24,18 @@ function SideBar({ collapsed }) {
         },
         {
           key: "1",
-          label: <Link to="/products">Mahsulotlar</Link>,
+          label: <Link to="/rents">Ijaralar</Link>,
           icon: <DesktopOutlined />,
         },
         {
           key: "2",
           label: <Link to="/categories">Kategoriya</Link>,
           icon: <ContainerOutlined />,
+        },
+        {
+          key: "/users",
+          label: <Link to="/users">Kitobxonlar</Link>,
+          icon: <UserOutlined />,
         },
       ]}
     />

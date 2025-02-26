@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router";
-import HomePage from "../pages/HomePage";
-import ProductsPage from "../pages/Productspage";
 import CategoriesPage from "../pages/CategoriesPage";
+import HomePage from "../pages/HomePage";
+import RentsPage from "../pages/RentsPage";
+import UsersPage from "../pages/UsersPage";
 
 function MainSection() {
   
@@ -9,8 +10,9 @@ function MainSection() {
     <main className="bg-slate-300 p-3 h-full w-full">
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/products" element={<ProductsPage />} />
+        <Route path="/rents" element={<RentsPage />} />
         <Route path="/categories" element={<CategoriesPage />} />
+        <Route path="/users" element={<UsersPage />} />
       </Routes>
     </main>
   );

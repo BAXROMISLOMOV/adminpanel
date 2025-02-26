@@ -1,3 +1,7 @@
+import {
+  UnlockOutlined,
+  UserOutlined
+} from "@ant-design/icons";
 import { Button, Card, Form, Input, message } from "antd";
 import axios from "axios";
 import React, { useState } from "react";
@@ -5,8 +9,8 @@ import useAuthstore from "../store/my-store";
 
 function Login() {
   const [Loading, setLoading] = useState(false);
-  return (
-    <div className="flex items-center justify-center   h-full ">
+  return (  
+    <div className="flex items-center justify-center  g h-full ">
       <Card className=" shadow-blue-700 shadow-lg w-96">
         <Form
           onFinish={(values) => {
@@ -21,6 +25,7 @@ function Login() {
                   user: res.data.user,
                 });
                 setLoading(false);
+                localStorage.setItem("auth", JSON.stringify(res.data)  )
                 message.success("success");
               })
               .catch((e) => {
@@ -30,12 +35,12 @@ function Login() {
               });
           }}
         >
-          <Form.Item label="Login" name={"username"}>
-            <Input />
+          <Form.Item label="" name={"username"}>
+            <Input  placeholder="Login" prefix={<UserOutlined />} />
           </Form.Item>
 
-          <Form.Item label="Password" name={"password"}>
-            <Input.Password />
+          <Form.Item label="" name={"password"}>
+            <Input.Password  placeholder="Password" prefix={<UnlockOutlined />} />
           </Form.Item>
           <Form.Item label={null}>
             <Button
@@ -43,6 +48,7 @@ function Login() {
               className="w-20"
               type="primary"
               htmlType="Submit"
+              block
               
             > Kirish</Button>
           </Form.Item>
