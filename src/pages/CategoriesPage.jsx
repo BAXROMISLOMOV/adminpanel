@@ -7,7 +7,6 @@ function CategoriesPage() {
     axios
       .get("https://67a4e835c0ac39787a1ce18e.mockapi.io/user")
       .then((res) => {
-        // console.log(res.data);
         setProducts(res.data);
       })
       .catch((error) => {

@@ -3,21 +3,21 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import useAuthstore from "../store/my-store";
 
-function Adduser() {
-  const [isOpen, setIsOpen] = useState(false);
+function Edituser({isOpen,setIsOpen , user}) {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState([]);
   const authState = useAuthstore();
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("https://library.softly.uz/api/users", {
+      const response = await axios.put(`https://library.softly.uz/api/users/${user.id}`, 
+      {
         headers: { Authorization: `Bearer ${authState.token}` },
       });
       setUsers(response.data);
     } catch (error) {
       console.error(error);
-      message.error("Foydalanuvchilarni yuklashda xatolik yuz berdi");
+      message.error("ozgartirishda yuklashda xatolik yuz berdi");
     }
   };
 
@@ -30,12 +30,13 @@ function Adduser() {
     try {
       await axios.post(
         "https://library.softly.uz/api/users",
+
         { ...values, phone: values.phone.toString() },
         {
           headers: { Authorization: `Bearer ${authState.token}` },
         }
       );
-      message.success("Foydalanuvchi qo'shildi");
+      message.success("Foydalanuvchi yangilandi");
       fetchUsers();
       setIsOpen(false);
     } catch (error) {
@@ -48,16 +49,16 @@ function Adduser() {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} type="primary">
-        Qoshish
-      </Button>
+    
       <Drawer
-        title="Kitobxon qo‘shish"
+        title="Kitobxon O'zgartirish"
         onClose={() => setIsOpen(false)}
         open={isOpen}
         destroyOnClose
       >
-        <Form onFinish={handleAddUser}>
+        <Form 
+         initialValues={user}
+        onFinish={handleAddUser}>
           <Form.Item label="Ism" name="firstName" rules={[{ required: true }]}>
             <Input />
           </Form.Item>
@@ -103,4 +104,4 @@ function Adduser() {
   );
 }
 
-export default Adduser;
+export default Edituser;
