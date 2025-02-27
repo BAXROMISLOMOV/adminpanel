@@ -8,6 +8,7 @@ function UsersPage() {
   const [rents, setRents] = useState();
   const state = useAuthstore();
   const pageSize = 10;
+  
   useEffect(() => {
     axios
       .get(" https://library.softly.uz/api/users", {
@@ -27,7 +28,7 @@ function UsersPage() {
         console.error(e);
         message.error("Error");
       });
-  }, []);
+  }, [currentPage]);
 
   if (!rents) {
     return <Spin />;
