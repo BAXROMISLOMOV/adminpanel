@@ -35,7 +35,6 @@ function CategoriesPage() {
             title: "kasb",
             dataIndex: "work",
             render: (work) => {
-              // console.log(work);
               return <img className=" h-9" src={work} />;
             },
           },
@@ -44,7 +43,6 @@ function CategoriesPage() {
             title: " rasim",
             dataIndex: "image",
             render: (image) => {
-              // console.log(image);
               return <img className=" h-9" src={image} />;
             },
           },

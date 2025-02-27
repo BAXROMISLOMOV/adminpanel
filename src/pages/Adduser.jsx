@@ -6,12 +6,13 @@ import useAuthstore from "../store/my-store";
 function Adduser() {
   const [isOpen, setIsOpen] = useState(false);
   const authState = useAuthstore();
+  const[loading , setLoading] = useState (false)
 
   return (
     <>
-      <Button
+            <Button
         onClick={() => {
-          setIsOpen(true);
+        setIsOpen(true);
         }}
         type="primary"
       >
@@ -19,38 +20,41 @@ function Adduser() {
       </Button>
       <Drawer
         title={"Kitobxon qoshish"}
-        open={isOpen}
-        closeIcon={null}
         onClose={() => {
           setIsOpen(false);
         }}
+        closeIcon={null}
+        open={isOpen}
+        destroyOnClose
       >
         <Form
+        
           onFinish={(values) => {
-            console.log(values);
-            values.phone.toString();
+            setLoading (true)
             axios
-              .post("https://library.softly.uz/api/users",
-               {...values,phone:values.phone.toString()}, 
-               {
-                headers: { Authorization: `Bearer ${authState.token}` },
-              })
+              .post(
+                `https://library.softly.uz/api/users`,
+                { ...values, phone: values.phone.toString() },
+                {
+                  headers: {
+                    Authorization: `Bearer ${authState.token}`,
+                  },
+                }
+              )
               .then((res) => {
                 console.log(res.data);
-                setIsOpen(false)
-                message.success("qoshildi")
+              })
+              .catch((e) => {
+                console.error(e);
+                message.error("Xatolik");
 
-                
-              })
-              .catch((e)=>{
-                console.log(e);
-                message.error("xatolik")
-                
-              })
+              });
+            setisOpen(false);
+            loading (false)
           }}
         >
           <Form.Item
-            label="ism"
+            label="Ism"
             name={"firstName"}
             rules={[
               {
@@ -61,7 +65,7 @@ function Adduser() {
             <Input />
           </Form.Item>
           <Form.Item
-            label="Familiya"
+            label="Familya"
             name={"lastName"}
             rules={[
               {
@@ -72,7 +76,7 @@ function Adduser() {
             <Input />
           </Form.Item>
           <Form.Item
-            label="Telefon raqami"
+            label="Telefon raqam"
             name={"phone"}
             rules={[
               {
@@ -80,10 +84,14 @@ function Adduser() {
               },
             ]}
           >
-            <InputNumber style={{ width: "100%" }} />
+            <InputNumber
+              style={{
+                width: "100%",
+              }}
+            />
           </Form.Item>
           <Form.Item
-            label="jinsi"
+            label="Jinsi"
             name={"gender"}
             rules={[
               {
@@ -103,20 +111,19 @@ function Adduser() {
                   value: "female",
                 },
               ]}
+              defaultValue="Apple"
               optionType="button"
-              htmlType="submit"
-              type="primary"
-            ></Radio.Group>
+              buttonStyle="solid"
+            />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" block
-            htmlType="submit"
-            >
+            <Button htmlType="submit" type="primary">
               Qoshish
             </Button>
           </Form.Item>
         </Form>
       </Drawer>
+
     </>
   );
 }

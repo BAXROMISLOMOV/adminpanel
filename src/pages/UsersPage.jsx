@@ -1,36 +1,42 @@
-import { Button, Drawer, message, Switch, Table } from "antd";
+import { message, Spin, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useAuthstore from "../store/my-store";
 import Adduser from "./Adduser";
 function UsersPage() {
+  const [currentPage, setCurrentPage] = useState(1);
   const [rents, setRents] = useState();
   const state = useAuthstore();
+  const pageSize = 10;
   useEffect(() => {
     axios
       .get(" https://library.softly.uz/api/users", {
         params: {
-          size: 20,
-          page: 1,
+          size: pageSize,
+          page: currentPage,
         },
         headers: {
           Authorization: `Bearer ${state.token}`,
         },
       })
       .then((res) => {
-        console.log(res.data.items);
-        setRents(res.data.items);
+        console.log(res.data);
+        setRents(res.data);
       })
       .catch((e) => {
         console.error(e);
         message.error("Error");
       });
   }, []);
+
+  if (!rents) {
+    return <Spin />;
+  }
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-xl font-bold">Kitobxonlar</h2>
-        <Adduser/>
+        <Adduser />
       </div>
       <Table
         bordered
@@ -51,8 +57,21 @@ function UsersPage() {
             title: "Familiya ",
             dataIndex: "lastName",
           },
+          {
+            key: "phone",
+            title: "Telephone ",
+            dataIndex: "phone",
+          },
         ]}
-        dataSource={rents}
+        dataSource={rents.items}
+        pagination={{
+          pageSize: pageSize,
+          current: currentPage,
+          total: rents.totalCount,
+        }}
+        onChange={(pagination) => {
+          setCurrentPage(pagination.current);
+        }}
       />
     </div>
   );
