@@ -1,4 +1,5 @@
 import {
+  BookOutlined,
   ContainerOutlined,
   DesktopOutlined,
   HomeOutlined,
@@ -36,6 +37,11 @@ function SideBar({ collapsed }) {
           key: "/users",
           label: <Link to="/users">Kitobxonlar</Link>,
           icon: <UserOutlined />,
+        },
+        {
+          key: "/stocks",
+          label: <Link to="/stocks">Kitoblarim</Link>,
+          icon: <BookOutlined />,
         },
       ]}
     />

@@ -1,11 +1,11 @@
-import { message, Spin, Table } from "antd";
+import { Button, message, Spin, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useAuthstore from "../store/my-store";
-import Adduser from "./Adduser";
-import Edituser from "./Edituser";
+import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import Addbook from "./AddBook";
 
-function UsersPage() {
+function Stocks() {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [rents, setRents] = useState();
@@ -15,7 +15,7 @@ function UsersPage() {
 
   useEffect(() => {
     axios
-      .get("https://library.softly.uz/api/users", {
+      .get("https://library.softly.uz/api/stocks", {
         params: {
           size: pageSize,
           page: currentPage,
@@ -41,10 +41,12 @@ function UsersPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <h2 className="text-xl font-bold">Kitobxonlar</h2>
-        <Adduser />
+        <h2 className="text-xl font-bold"> kitoblar</h2>
+        <Addbook user={user} isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
-      <Edituser user={user} isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Button>
+        <Addbook  />
+      </Button>
 
       <Table
         bordered
@@ -68,72 +70,41 @@ function UsersPage() {
             },
           },
           {
-            key: "firstName",
-            title: "Ism",
-            dataIndex: "firstName",
+            key: "book",
+            title: "Kitob",
+            dataIndex: "book",
+            render: (book) => {
+              return <div>{ book?.name}</div>;
+            },
           },
           {
-            key: "lastName",
-            title: "Familiya",
-            dataIndex: "lastName",
-          },
-          {
-            key: "phone",
-            title: "Telephone",
-            dataIndex: "phone",
-          },
-          {
-            key: "phoneVerified",
-            title: "Qoshimcha.t",
-            dataIndex: "phoneVerified",
-          },
-          {
-            key: "passportId",
-            title: "Passsport",
-            dataIndex: "passportId",
-          },
-          {
-            key: "status",
-            title: "Status",
-            dataIndex: "status",
-            render: (status) => (
+            key: "busy",
+            title: " Bandlig",
+            dataIndex: "busy",
+            render: (busy) => (
               <span
                 style={{
-                  background: status === 1 ? "lightgreen" : "#ffcccc",
-                  color: status === 1 ? "green" : "red",
+                  color: busy === true ? "red" : "green",
                   fontWeight: "bold",
-                  padding: "5px",
-                  borderRadius: "5px",
                 }}
               >
-                {status === 1 ? "Active" : "Blocked"}
+                {busy === true ? (
+                  <CloseCircleOutlined />
+                ) : (
+                  <CheckCircleOutlined />
+                )}
               </span>
             ),
           },
           {
-            key: "balance",
-            title: "Hisob",
-            dataIndex: "balance",
-          },
-          {
-            key: "blockingReason",
-            title: "Bloklanish sababi",
-            dataIndex: "blockingReason",
-          },
-          {
-            key: "birthDate",
-            title: "Tug'ilgan sana",
-            dataIndex: "birthDate",
-          },
-          {
             key: "createdAt",
-            title: "Yaratilgan",
+            Title: "Yasalgan",
             dataIndex: "createdAt",
             render: (value) => new Date(value).toLocaleString("ru"),
           },
           {
             key: "updatedAt",
-            title: "Yangilangan",
+            title: "Yangolangan",
             dataIndex: "updatedAt",
             render: (value) => new Date(value).toLocaleString("ru"),
           },
@@ -153,4 +124,4 @@ function UsersPage() {
   );
 }
 
-export default UsersPage;
+export default Stocks;

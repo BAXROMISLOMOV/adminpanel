@@ -3,6 +3,7 @@ import CategoriesPage from "../pages/CategoriesPage";
 import HomePage from "../pages/HomePage";
 import RentsPage from "../pages/RentsPage";
 import UsersPage from "../pages/UsersPage";
+import Stocks from "../pages/StocksPage";
 
 function MainSection() {
   
@@ -13,6 +14,7 @@ function MainSection() {
         <Route path="/rents" element={<RentsPage />} />
         <Route path="/categories" element={<CategoriesPage />} />
         <Route path="/users" element={<UsersPage />} />
+        <Route path="/stocks" element={<Stocks />} />
       </Routes>
     </main>
   );

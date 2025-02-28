@@ -93,7 +93,7 @@ function Adduser() {
             />
           </Form.Item>
           <Form.Item>
-            <Button block htmlType="submit" type="primary" loading={loading}>
+            <Button  block htmlType="submit" type="primary" loading={loading}>
               Qoshish
             </Button>
           </Form.Item>
