@@ -145,6 +145,7 @@ function UsersPage() {
           current: currentPage,
           total: rents.totalCount,
         }}
+        rowKey={"id"}
         onChange={(pagination) => {
           setCurrentPage(pagination.current);
         }}

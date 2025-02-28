@@ -15,9 +15,8 @@ function Edituser({isOpen,setIsOpen , user}) {
         headers: { Authorization: `Bearer ${authState.token}` },
       });
       setUsers(response.data);
-    } catch (error) {
-      console.error(error);
-      message.error("ozgartirishda yuklashda xatolik yuz berdi");
+    } catch (_) {
+      
     }
   };
 
@@ -95,7 +94,7 @@ function Edituser({isOpen,setIsOpen , user}) {
           </Form.Item>
           <Form.Item>
             <Button block htmlType="submit" type="primary" loading={loading}>
-              Qoshish
+              O'zgartirish
             </Button>
           </Form.Item>
         </Form>

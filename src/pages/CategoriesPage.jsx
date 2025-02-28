@@ -52,6 +52,7 @@ function CategoriesPage() {
           },
         ]}
         dataSource={products}
+        rowKey={"id"}
       />
     </>
   );
