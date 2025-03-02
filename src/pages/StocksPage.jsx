@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import useAuthstore from "../store/my-store";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import Addbook from "./AddBook";
+import Editbook from "./Editbook";
 
 function Stocks() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,7 @@ function Stocks() {
   const state = useAuthstore();
   const pageSize = 10;
   const [user, setUser] = useState();
+  
 
   useEffect(() => {
     axios
@@ -44,9 +46,7 @@ function Stocks() {
         <h2 className="text-xl font-bold"> kitoblar</h2>
         <Addbook user={user} isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
-      <Button>
-        <Addbook  />
-      </Button>
+      <Editbook user={user} isOpen={isOpen} setIsOpen={setIsOpen} />
 
       <Table
         bordered
@@ -59,10 +59,11 @@ function Stocks() {
             render: (id, item) => {
               return (
                 <div
-                  onClick={() => {
-                    setUser(item);
-                    setIsOpen(true);
-                  }}
+                className=" text-blue-500  cursor-pointer hover:text-blue-700"
+                onClick={() => {
+                  setUser(item);
+                  setIsOpen(true);
+                }}
                 >
                   {id}
                 </div>
@@ -74,7 +75,7 @@ function Stocks() {
             title: "Kitob",
             dataIndex: "book",
             render: (book) => {
-              return <div>{ book?.name}</div>;
+              return <div>{book.id} . {book.name} </div>;
             },
           },
           {

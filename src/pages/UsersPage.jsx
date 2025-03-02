@@ -6,9 +6,9 @@ import Adduser from "./Adduser";
 import Edituser from "./Edituser";
 
 function UsersPage() {
-  const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [rents, setRents] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const state = useAuthstore();
   const pageSize = 10;
   const [user, setUser] = useState();
@@ -57,6 +57,7 @@ function UsersPage() {
             render: (id, item) => {
               return (
                 <div
+                className=" text-blue-500  cursor-pointer hover:text-blue-700"
                   onClick={() => {
                     setUser(item);
                     setIsOpen(true);

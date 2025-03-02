@@ -1,23 +1,26 @@
-import { Button, Drawer, Form, Select, message } from "antd";
+import { Button, Drawer, Form, message, Select } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import useAuthstore from "../store/my-store";
 
-function Addbook() {
-  const [isOpen, setIsOpen] = useState(false);
+function Editbook({ isOpen, setIsOpen, bookId }) {
   const [loading, setLoading] = useState(false);
-  const [books, setBooks] = useState([]); 
   const authState = useAuthstore();
-  
+  const [books, setBooks] = useState([]);
 
-  const fetchBooks = async () => {
+  const fetchUsers = async () => {
+    if (!bookId) return;
     try {
-      const response = await axios.get("https://library.softly.uz/api/books", {
-        headers: { Authorization: `Bearer ${authState.token}` },
-      });
+      const response = await axios.get(
+        `https://library.softly.uz/api/stocks/${bookId}`,
+        {
+          headers: { Authorization: `Bearer ${authState.token}` },
+        }
+      );
+      console.log("API Response:", response.data);
+setUsers(response.data);
+setBooks(response.data.items || []);
 
-      console.log("API Response:", response.data); 
-      setBooks(response.data.items || []);
     } catch (error) {
       console.error("Kitoblarni yuklashda xatolik:", error);
       message.error("Kitoblarni yuklashda xatolik yuz berdi");
@@ -25,20 +28,23 @@ function Addbook() {
   };
 
   useEffect(() => {
-    fetchBooks();
-  }, []);
+    if (bookId) {
+      fetchUsers();
+    }
+  }, [bookId]);
 
-  const handleAddBook = async (values) => {
+  const handleAddUser = async (values) => {
     setLoading(true);
     try {
       await axios.post(
-        "https://library.softly.uz/api/stocks",
+        "https://library.softly.uz/api/books",
         { bookId: values.bookId },
         {
           headers: { Authorization: `Bearer ${authState.token}` },
         }
       );
-      message.success("Kitob qo'shildi");
+      message.success("Foydalanuvchi yangilandi");
+      fetchUsers();
       setIsOpen(false);
     } catch (error) {
       console.error(error);
@@ -50,19 +56,16 @@ function Addbook() {
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} type="primary">
-        Qo‘shish
-      </Button>
       <Drawer
-        title="Kitob qo‘shish"
+        title="Kitobxon O'zgartirish"
         onClose={() => setIsOpen(false)}
         open={isOpen}
         destroyOnClose
       >
-        <Form onFinish={handleAddBook}>
+        <Form initialValues={{ bookId: bookId }} onFinish={handleAddUser}>
           <Form.Item
             label="Kitob"
-            name="bookId"
+            name=""
             rules={[{ required: true, message: "Kitobni tanlang" }]}
           >
             <Select
@@ -70,17 +73,16 @@ function Addbook() {
               options={
                 books && Array.isArray(books)
                   ? books.map((book) => ({
-                      label: book.title,
-                      value: book.name,
+                      label: book.name,
+                      value: book.name, 
                     }))
                   : []
               }
             />
-          </Form.Item>
-
+            </Form.Item>
           <Form.Item>
             <Button block htmlType="submit" type="primary" loading={loading}>
-              Qo‘shish
+              O‘zgartirish
             </Button>
           </Form.Item>
         </Form>
@@ -89,4 +91,4 @@ function Addbook() {
   );
 }
 
-export default Addbook;
+export default Editbook;

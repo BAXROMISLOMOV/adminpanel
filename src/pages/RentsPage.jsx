@@ -1,8 +1,11 @@
 import { message, Switch, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import Adduser2 from "./Adduser2";
 function RentsPage() {
   const [rents, setRents] = useState();
+    const [isOpen, setIsOpen] = useState(false);
+  z
   useEffect(() => {
     axios
       .get(" https://library.softly.uz/api/rents", {
@@ -26,7 +29,13 @@ function RentsPage() {
   }, []);
   return (
     <div>
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-xl font-bold">Kitobxonlar</h2>
+        <Adduser2 />
+      </div>
       <h2>retspage</h2>
+
+      
       <Table
         bordered
         loading={rents ? false : true}
@@ -37,7 +46,7 @@ function RentsPage() {
             dataIndex: "id",
           },
           {
-            key: "gvfc",
+            key: "leasedAt",
             title: "Berilgan sana",
             dataIndex: "leasedAt",
             render: (value) => {
@@ -64,6 +73,8 @@ function RentsPage() {
           },
         ]}
         dataSource={rents}
+        rowKey={"id"}
+
 
       />
     </div>
