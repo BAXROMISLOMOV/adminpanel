@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import Adduser2 from "./Adduser2";
 function RentsPage() {
   const [rents, setRents] = useState();
-    const [isOpen, setIsOpen] = useState(false);
-  z
+  
   useEffect(() => {
     axios
       .get(" https://library.softly.uz/api/rents", {
