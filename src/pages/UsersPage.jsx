@@ -1,28 +1,23 @@
 import { message, Spin, Table } from "antd";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useAuthstore from "../store/my-store";
 import Adduser from "./Adduser";
 import Edituser from "./Edituser";
+import api from "../Api/api";
 
 function UsersPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [rents, setRents] = useState();
+  const [rents, setRents] = useState({ items: [], totalCount: 0 });
   const [isOpen, setIsOpen] = useState(false);
-  const state = useAuthstore();
+  const [user, setUser] = useState(null);
+  const token = useAuthstore((state) => state.token);
   const pageSize = 10;
-  const [user, setUser] = useState();
 
   useEffect(() => {
-    axios
-      .get("https://library.softly.uz/api/users", {
-        params: {
-          size: pageSize,
-          page: currentPage,
-        },
-        headers: {
-          Authorization: `Bearer ${state.token}`,
-        },
+    api
+      .get("/api/users", {
+        params: { size: pageSize, page: currentPage },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         console.log(res.data);
@@ -32,9 +27,9 @@ function UsersPage() {
         console.error(e);
         message.error("Error");
       });
-  }, [currentPage]);
+  }, [currentPage, token]);
 
-  if (!rents) {
+  if (!rents.items.length) {
     return <Spin />;
   }
 
@@ -48,51 +43,45 @@ function UsersPage() {
 
       <Table
         bordered
-        loading={rents ? false : true}
+        loading={!rents.items.length}
         columns={[
           {
             key: "id",
             title: "ID",
             dataIndex: "id",
-            render: (id, item) => {
-              return (
-                <div
-                className=" text-blue-500  cursor-pointer hover:text-blue-700"
-                  onClick={() => {
-                    setUser(item);
-                    setIsOpen(true);
-                  }}
-                >
-                  {id}
-                </div>
-              );
-            },
+            render: (id, item) => (
+              <div
+                className="text-blue-500 cursor-pointer hover:text-blue-700"
+                onClick={() => {
+                  setUser(item);
+                  setIsOpen(true);
+                }}
+              >
+                {id}
+              </div>
+            ),
           },
-          {
+          { 
             key: "firstName",
-            title: "Ism",
-            dataIndex: "firstName",
+             title: "Ism", dataIndex:
+              "firstName" 
+            },
+          { key: "lastName", 
+            title: "Familiya", 
+            dataIndex: "lastName" 
           },
-          {
-            key: "lastName",
-            title: "Familiya",
-            dataIndex: "lastName",
-          },
-          {
-            key: "phone",
+          { key: "phone",
             title: "Telephone",
-            dataIndex: "phone",
+            dataIndex: "phone" 
           },
-          {
-            key: "phoneVerified",
+          { key: "phoneVerified",
             title: "Qoshimcha.t",
-            dataIndex: "phoneVerified",
+            dataIndex: "phoneVerified"
           },
-          {
-            key: "passportId",
+          { key: "passportId",
             title: "Passsport",
-            dataIndex: "passportId",
-          },
+            dataIndex: "passportId"
+           },
           {
             key: "status",
             title: "Status",
@@ -112,19 +101,19 @@ function UsersPage() {
             ),
           },
           {
-            key: "balance",
-            title: "Hisob",
-            dataIndex: "balance",
+             key: "balance",
+            title: "Hisob", 
+            dataIndex: "balance" 
           },
-          {
-            key: "blockingReason",
-            title: "Bloklanish sababi",
-            dataIndex: "blockingReason",
+          { 
+            key: "blockingReason", 
+            title: "Bloklanish sababi", 
+            dataIndex: "blockingReason" 
           },
-          {
-            key: "birthDate",
-            title: "Tug'ilgan sana",
-            dataIndex: "birthDate",
+          { 
+            key: "birthDate", 
+            title: "Tug'ilgan sana", 
+            dataIndex: "birthDate" 
           },
           {
             key: "createdAt",
@@ -143,12 +132,10 @@ function UsersPage() {
         pagination={{
           pageSize: pageSize,
           current: currentPage,
-          total: rents.totalCount,
+          total: rents.totalCount || 0,
+          onChange: (page) => setCurrentPage(page),
         }}
-        rowKey={"id"}
-        onChange={(pagination) => {
-          setCurrentPage(pagination.current);
-        }}
+        rowKey="id"
       />
     </div>
   );

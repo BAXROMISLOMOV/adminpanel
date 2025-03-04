@@ -3,8 +3,9 @@ import { message, Spin, Table } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useAuthstore from "../store/my-store";
-import Addbook from "./AddBook";
+import Addbook from "./AddrentUser";
 import Editbook from "./Editbook";
+import api from "../Api/api";
 
 function Stocks() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,8 +17,8 @@ function Stocks() {
   
 
   useEffect(() => {
-    axios
-      .get("https://library.softly.uz/api/stocks", {
+    api
+      .get("/api/stocks", {
         params: {
           size: pageSize,
           page: currentPage,

@@ -1,6 +1,6 @@
 import { Button, Drawer, Form, message, Select } from "antd";
-import axios from "axios";
 import { useEffect, useState } from "react";
+import api from "../Api/api";
 import useAuthstore from "../store/my-store";
 
 function Editbook({ isOpen, setIsOpen, bookId }) {
@@ -11,8 +11,8 @@ function Editbook({ isOpen, setIsOpen, bookId }) {
   const fetchUsers = async () => {
     if (!bookId) return;
     try {
-      const response = await axios.get(
-        `https://library.softly.uz/api/stocks/${bookId}`,
+      const response = await api.get(
+        `/api/stocks/${bookId}`,
         {
           headers: { Authorization: `Bearer ${authState.token}` },
         }
@@ -36,8 +36,8 @@ setBooks(response.data.items || []);
   const handleAddUser = async (values) => {
     setLoading(true);
     try {
-      await axios.post(
-        "https://library.softly.uz/api/books",
+      await api.post(
+        "/api/books",
         { bookId: values.bookId },
         {
           headers: { Authorization: `Bearer ${authState.token}` },

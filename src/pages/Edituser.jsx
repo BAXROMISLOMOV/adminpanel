@@ -2,6 +2,7 @@ import { Button, Drawer, Form, Input, InputNumber, message, Radio } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import useAuthstore from "../store/my-store";
+import api from "../Api/api";
 
 function Edituser({isOpen,setIsOpen , user}) {
   const [loading, setLoading] = useState(false);
@@ -10,7 +11,7 @@ function Edituser({isOpen,setIsOpen , user}) {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.put(`https://library.softly.uz/api/users/${user.id}`, 
+      const response = await api.put(`/api/users/${user.id}`, 
       {
         headers: { Authorization: `Bearer ${authState.token}` },
       });
@@ -27,8 +28,8 @@ function Edituser({isOpen,setIsOpen , user}) {
   const handleAddUser = async (values) => {
     setLoading(true);
     try {
-      await axios.post(
-        "https://library.softly.uz/api/users",
+      await api.post(
+        "/api/users",
 
         { ...values, phone: values.phone.toString() },
         {
