@@ -2,10 +2,10 @@ import { message, Switch, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import api from "../Api/api";
 import useAuthstore from "../store/my-store";
-import AddUser from "./AddrentUser";
+import Adduser from "./Adduser";
 import Editbook from "./Editbook";
 
-function RentsPage() {
+function RentsPage({}) {
   const [rents, setRents] = useState({ items: [], totalCount: 0 });
   const token = useAuthstore((state) => state.token);
   const [currentPage, setCurrentPage] = useState(1);
@@ -13,6 +13,8 @@ function RentsPage() {
   const [books, setBooks] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [rent, setRent] = useState({});
+
   const pageSize = 10;
 
   const Rentsrefresh = () => {
@@ -23,7 +25,6 @@ function RentsPage() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
-        console.log(res.data);
         setRents(res.data);
         const books_ids = res.data.items.map(
           (item) => {
@@ -39,7 +40,6 @@ function RentsPage() {
           })
           .then((res) => {
             setBooks(res.data.items);
-            console.log();
           });
       })
       .catch((e) => {
@@ -52,16 +52,22 @@ function RentsPage() {
   };
   useEffect(() => {
     Rentsrefresh();
-  }, [currentPage]);
-
+  }, [currentPage, token]);
+  
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-xl font-bold">Kitobxonlar</h2>
-        <AddUser RentsRefresh={Rentsrefresh} />
+        <Adduser RentsRefresh={Rentsrefresh} />
       </div>
       <h2>retspage</h2>
-      <Editbook user={books} isOpen={isOpen} setIsOpen={setIsOpen} />
+      <Editbook
+        user={books}
+        setRents={setRent}
+        rent={rent}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      />
 
       <Table
         bordered
@@ -70,22 +76,32 @@ function RentsPage() {
             key: "id",
             title: "ID",
             dataIndex: "id",
+            render: (id) => {
+              return (
+                <div
+                onClick={() => {
+                  setIsOpen(true);
+                  setRent(rents.items.find((item) => item.id === id));
+                }}
+                
+                  className="text-blue-600 cursor-pointer"
+                >
+                  {id}
+                </div>
+              );
+            },
           },
           {
             key: "user",
             title: "Ism",
             dataIndex: "user",
-            render: (item) => (
-              <div className="text-blue-500">{item.firstName}</div>
-            ),
+            render: (item) => <div>{item.firstName}</div>,
           },
           {
             key: "user",
             title: "Familiya",
             dataIndex: "user",
-            render: (item) => (
-              <div className="text-blue-500">{item.lastName}</div>
-            ),
+            render: (item) => <div>{item.lastName}</div>,
           },
           {
             key: "leasedAt",

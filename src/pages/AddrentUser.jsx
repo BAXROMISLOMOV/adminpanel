@@ -8,7 +8,6 @@ function AddUser({ RentsRefresh }) {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const authState = useAuthstore();
-  const [rents, setRents] = useState();
 
   const [data, setData] = useState({
     users: [],
