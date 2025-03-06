@@ -57,10 +57,10 @@ function RentsPage({}) {
   return (
     <div>
       <div className="flex justify-between items-center mb-2">
-        <h2 className="text-xl font-bold">Kitobxonlar</h2>
+        <h2 className="text-xl font-bold">Ijaralar</h2>
         <Adduser RentsRefresh={Rentsrefresh} />
       </div>
-      <h2>retspage</h2>
+      <h2></h2>
       <Editbook
         user={books}
         setRents={setRent}
